@@ -73,7 +73,7 @@ function sdkSetup() {
 
     const algodServer = 'https://testnet-algorand.api.purestake.io/ps2';
     const indexerServer = 'https://testnet-algorand.api.purestake.io/idx2';
-    const token = { 'X-API-Key': 'X7HxsshAnN626baE6sNP9963GCwayNPXamoGg3fy' }
+    const token = { 'X-API-Key': '****************************' }
     const port = '';
 
     algodClient = new algosdk.Algodv2(token, algodServer, port);
@@ -156,7 +156,7 @@ function params() {
 
     const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
       from: document.getElementById('player').innerHTML,
-      to: 'UOSB5XIKB6LSIXUKSOJCPFVUYHAWJFTXCUETQ72VPRSI7RDAEFHXYGSBZY',
+      to: '**********************************',
       amount: 250000,
       note: AlgoSigner.encoding.stringToByteArray('1dtable'),
       // assetIndex: '22055740',
@@ -190,7 +190,7 @@ function params() {
     // let accountCodeElem = document.getElementById('accounts-code');
 
     const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-      from: 'UOSB5XIKB6LSIXUKSOJCPFVUYHAWJFTXCUETQ72VPRSI7RDAEFHXYGSBZY',
+      from: '***********************************',
       to: document.getElementById('player').innerHTML,
       amount: 250000,
       note: AlgoSigner.encoding.stringToByteArray('1dtable'),
@@ -263,7 +263,7 @@ function params() {
       // hljs.highlightBlock(sendCodeElem);
       // menu_start_game_click('Pro');
 
-      window.location('localhost:5000')
+      // window.location('localhost:5000')
     });
   }
 
