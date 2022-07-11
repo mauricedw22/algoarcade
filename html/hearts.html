@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122949887-1"></script>
+	<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'UA-122949887-1');
+	</script> -->
+
+	<title>AlgoHEARTS</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Arcade Hearts - Play for only 0.25 ALGO!">
+	<meta name="author" content="Algo Hearts">
+	
+	<meta name="viewport" content="initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no">
+
+	<!-- Favicon -->
+	<link rel="icon" href="images/cards-roulette.PNG" />
+	
+	<link rel="stylesheet" href="css/menus-hearts.css">
+	<link rel="stylesheet" href="css/cards-hearts.css">
+	<link rel="stylesheet" href="css/scoreboard-hearts.css">
+	<link rel="stylesheet" href="css/game-hearts.css">
+
+	<script>
+		//
+		// Initialize
+		//
+		var game = null;
+
+		window.onload = function () {
+			//if (redirectToAppStore()) {
+			//	return;
+			//}
+			UpdateBackgroundImageFromSettings();
+			setTimeout(function () {
+				ShowMainMenu(false);
+				ShowTitle();
+			}, 500);
+
+			game = new Game();
+
+		};
+
+	</script>
+
+	<script type="text/javascript" src="js/menus-hearts.js"></script>
+	<script type="text/javascript" src="js/settings-hearts.js"></script>
+	<script type="text/javascript" src="js/game-hearts.js"></script>
+	<script type="text/javascript" src="js/scoreboard-hearts.js"></script>
+	<script type="text/javascript" src="js/player-hearts.js"></script>
+	<script type="text/javascript" src="js/GameSimulator-hearts.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+	<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+	<script>
+	window.addEventListener("load", function(){
+	window.cookieconsent.initialise({
+		"palette": {
+    "popup": {
+      "background": "#252e39"
+    },
+    "button": {
+      "background": "#14a7d0"
+    }
+  },
+	"theme": "edgeless",
+	"position": "bottom-left",
+	"content": {
+		"message": "This site uses cookies to analyze traffic and for ad personalization and ad measurement purposes.",
+		"dismiss": "OK",
+		"link": "Learn more",
+		"href": "https://policies.google.com/technologies/cookies"
+	}
+	})});
+	</script>
+</head>
+
+<body onresize="game.OnResizeWindow()">
+
+	<div id="game_title">
+		<center>
+			<div class="t1">ALGOHEARTS</div>
+			<!-- <div class="t2">CARD CLASSIC</div> -->
+		</center>
+	</div>
+
+	<div id="below_cards_messages_region">
+		<div class="player_name" id="player_name_South"></div>
+		<div class="player_name" id="player_name_West"></div>
+		<div class="player_name" id="player_name_North"></div>
+		<div class="player_name" id="player_name_East"></div>
+		
+		<div class="player_score" id="player_score_South"></div>
+		<div class="player_score" id="player_score_West"></div>
+		<div class="player_score" id="player_score_North"></div>
+		<div class="player_score" id="player_score_East"></div>
+		
+		<div id="select_passing_cards_message">Select 3 cards to pass left:</div>
+		<div id="select_passing_cards_region_0" class="select_passing_card_region"></div>
+		<div id="select_passing_cards_region_1" class="select_passing_card_region"></div>
+		<div id="select_passing_cards_region_2" class="select_passing_card_region"></div>
+
+		<div id="confirm_passing_cards_region">
+			<div id="confirm_passing_cards_shadow"></div>
+			<button id="confirm_passing_cards_button" onclick="game.passingCardsConfirmed()">Pass Cards</button>
+		</div>
+
+		<div id="player_play_prompt">Drop a card here</div>
+
+		<div id="moon_shoot_text"></div>
+
+		<button id="hint_button" onclick="game.OnHintButtonClick()">Hint</button>
+		
+		<div id="scoreboard">
+			<div id="scoreboardBackground" onclick="game.OnScoreboardClick()">
+				<div id="scoreboardPlayerRegionSouth" class="scoreboardPlayerRegion">
+					<div id="scoreboardPlayerNameSouth" class="scoreboardPlayerName">South</div>
+					<div id="scoreboardPlayerBarSouth" class="scoreboardPlayerBar">
+						<div id="scoreboardPlayerBarFillSouth" class="scoreboardPlayerBarFill"></div>
+					</div>
+					<div id="scoreboardPlayerScoreSouth" class="scoreboardPlayerScore">10</div>
+				</div>
+				<div id="scoreboardPlayerRegionWest" class="scoreboardPlayerRegion">
+					<div id="scoreboardPlayerNameWest" class="scoreboardPlayerName">West</div>
+					<div id="scoreboardPlayerBarWest" class="scoreboardPlayerBar">
+						<div id="scoreboardPlayerBarFillWest" class="scoreboardPlayerBarFill"></div>
+					</div>
+					<div id="scoreboardPlayerScoreWest" class="scoreboardPlayerScore">10</div>
+				</div>
+				<div id="scoreboardPlayerRegionNorth" class="scoreboardPlayerRegion">
+					<div id="scoreboardPlayerNameNorth" class="scoreboardPlayerName">North</div>
+					<div id="scoreboardPlayerBarNorth" class="scoreboardPlayerBar">
+						<div id="scoreboardPlayerBarFillNorth" class="scoreboardPlayerBarFill"></div>
+					</div>
+					<div id="scoreboardPlayerScoreNorth" class="scoreboardPlayerScore">10</div>
+				</div>
+				<div id="scoreboardPlayerRegionEast" class="scoreboardPlayerRegion">
+					<div id="scoreboardPlayerNameEast" class="scoreboardPlayerName">East</div>
+					<div id="scoreboardPlayerBarEast" class="scoreboardPlayerBar">
+						<div id="scoreboardPlayerBarFillEast" class="scoreboardPlayerBarFill"></div>
+					</div>
+					<div id="scoreboardPlayerScoreEast" class="scoreboardPlayerScore">10</div>
+				</div>
+
+				<div id="scoreboardRoundScoresRegion"></div>
+
+			</div>
+			<div id="scoreboardDifficulty"></div>
+		</div>
+	</div>
+
+	<div id="cards_region"></div>
+
+	<!-- <button id="get_more_games_button" onclick="PlayMoreGamesButtonPressed()">
+		Play More<br>Card Classics
+	</button>
+
+	<div id="adView" align="center">
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+			
+			<ins class="adsbygoogle"
+				style="display:inline-block;width:728px;height:90px"
+				data-ad-client="ca-pub-2857597813964310"
+				data-ad-slot="8562908545"></ins>
+			<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+	</div> -->
+
+	
+	<div id="GameOverView">
+		<div id="GameOverResultText">You won!</div>
+		<div id="GameOverResultText2">vs the easy players</div>
+	</div>
+
+	<div id="BubbleScoreHeartTemplate" class="BubbleScoreHeart">
+		<table style="width: 95px; margin-top: 15px;">
+			<tr>
+				<td class="BubbleScoreHeartsPoints">+1</td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="BubbleScoreSpadeTemplate" class="BubbleScoreSpade">
+		<table style="width: 75px; margin-top: 15px;">
+			<tr>
+				<td class="BubbleScoreSpadesPoints">+13</td>
+			</tr>
+		</table>
+	</div>
+
+	<button id="menu_button" onclick="MenuButtonPressed()">
+		<img src="images/MenuButton.png" ondragstart="return false;" />
+	</button>
+
+	<div id="menu_main" class="menu_view">
+		<p id="connected"></p>
+		<span id="player" style="visibility:hidden;"></span>
+		<input type="hidden" id="winner" style="visibility:hidden;" value="" />
+		<button id="menu_main_close_button" class="close_button" onclick="menu_main_close_click()">X</button>
+		<button id="connect" class="menu_button">Connect AlgoSigner</button>
+		<button id="bet1" class="menu_button button-invisible">Play Algo <span style="font-size:40px;">&hearts;</span></button>
+		<a href="/"><button class="menu_button">Back to AlgoArcade</button></a>
+		<!-- <button id="statistics_button" class="menu_button" onclick="ShowStatisticsMenu()">Statistics</button>
+		<button id="settings_button" class="menu_button" onclick="ShowSettingsMenu()">Settings</button> -->
+	</div>
+
+	<div id="menu_start_a_game" class="menu_view">
+		<div id="menu_start_a_game_title" class="menu_card_title">Choose a difficulty level:</div>
+		<button id="menu_start_a_game_close_button" class="close_button" onclick="menu_card_close_click()">X</button>
+		<button id="easy_game_button" class="menu_button" onclick="menu_start_game_click('Easy')">Easy</button>
+		<button id="standard_game_button" class="menu_button" onclick="menu_start_game_click('Standard')">Standard</button>
+		<button id="pro_game_button" class="menu_button" onclick="menu_start_game_click('Pro')">Pro</button>
+		<div style="text-align:center;font-size:12pt; pointer-events: none;">Cards are dealt randomly for all difficulty levels.</div>
+		<a id="menu_start_a_game_difficulties_link" onclick="ShowDifficultiesExplainedMenu()" href="#">Click here to learn how difficulties work</a>
+	</div>
+
+	<div id="menu_difficulties_explained" class="menu_view">
+		<div id="menu_difficulties_explained_title" class="menu_card_title">Computer Difficulty Levels Explained</div>
+		<button id="menu_difficulties_explained_close_button" class="close_button" onclick="menu_card_close_click()">X</button>
+		<div id="menu_difficulties_explained_body">
+			For all three difficulty levels the cards are dealt completely at random to both you and to the computer players. Computer players are not given any special advantage and they do not know what cards are in your hand or in any other players' hands. The difference between the easy, standard, and pro players is the strategy used to choose their plays.  If you are finding that the computer is beating you, you will likely benefit from understanding how the computer chooses its next move.
+			<br>
+			<br>
+			<center>
+				<div style="font-size:16pt">
+					<u>Easy Computer Strategy</u>
+				</div>
+			</center>
+			<table style="width:100%; text-align:left; font-size:12pt;">
+				<tr>
+					<td valign="top" width="80pt">Passing:</td>
+					<td>Chooses a random set of cards.</td>
+				</tr>
+				<tr>
+					<td valign="top" width="80pt">Playing:</td>
+					<td>Chooses a random valid card.</td>
+				</tr>
+			</table>
+			<br>
+			<center>
+				<div style="font-size:16pt">
+					<u>Standard Computer Strategy</u>
+				</div>
+			</center>
+			<table style="width:100%; text-align:left; font-size:12pt;">
+				<tr>
+					<td valign="top" width="80pt">Passing:</td>
+					<td>Chooses the three highest valued cards where value is determined by the card number (Ace, King, Queen, etc...) and suit (Spades, Hearts, Diamonds, Clubs).</td>
+				</tr>
+				<tr>
+					<td valign="top" width="80pt">Playing:</td>
+				<td>When playing first, chooses the lowest card in hand.  When playing 2nd or 3rd, plays the highest card that will not take the trick, otherwise, plays the lowest card of suit.  When playing last, if there are points in the trick, plays the highest card that will not take the trick or if it must take the trick, plays the highest card of suit (avoiding the Queen of Spades).  If playing last and there are no points in the trick, plays the highest card in hand.  When the player is void in the lead suit, it will play its highest valued cards starting with QS, AS, AH, AD, AC, KS, KH, KD, KC, QH, QD, QC, etc...</td>
+				</tr>
+			</table>
+			<br>
+			<center>
+				<div style="font-size:16pt">
+					<u>Pro Computer Strategy</u>
+				</div>
+			</center>
+			<table style="width:100%; text-align:left; font-size:12pt;">
+				<tr>
+					<td valign="top" width="80pt">Passing:</td>
+					<td>Chooses the three highest valued cards where value is determined by the card number (Ace, King, Queen, etc...) and suit (Spades, Hearts, Diamonds, Clubs).</td>
+				</tr>
+				<tr>
+					<td valign="top" width="80pt">Playing:</td>
+					<td>The pro computer evaluates each valid play by simulating random card distributions of the unseen cards taking into account which players are known to be void in particular suits.  When simulating a game, each player plays the rest of the round using the Standard Playing algorithm (see above).  At the end of each simulated round, the final score is recorded and the average round score is determined for each valid play.  The play that results in the lowest average simulated round score is used.</td>
+				</tr>
+			</table>
+
+		</div>
+	</div>
+
+	<div id="menu_settings" class="menu_view">
+		<div id="menu_settings_title" class="menu_card_title">Settings</div>
+		<button id="menu_settings_close_button" class="close_button" onclick="menu_card_close_click()">X</button>
+		<table style="margin-left:5%; width:95%; margin-top:55pt; margin-bottom: 10px; text-align:left; font-size:16pt;">
+			<tr>
+				<td>Hint button on all levels:</td>
+				<td>
+					<label class="switch">
+						<input id="setting_hints_checkbox" type="checkbox" onclick="SettingHintsClicked(this)">
+						<span class="slider round"></span>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td>Losing score:</td>
+				<td>
+					<select id="losing_score_dropdown" name="losing_score_dropdown" onchange="SettingLosingScoreChanged(this)">
+						<option value="50">50</option>
+						<option value="100">100</option>
+						<option value="200">200</option>
+						<option value="500">500</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<div style="margin-left:5%; width:95%; text-align:left; font-size:16pt;">Board Background:</div>
+		<div class="image-selector">
+			<input id="wood_light" type="radio" name="settings_boardbackground_selector" value="wood_light" onclick="BoardSelectorClick(this)"
+			/>
+			<label class="board-selector-item background_wood_light" for="wood_light"></label>
+			<input id="wood" type="radio" name="settings_boardbackground_selector" value="wood" onclick="BoardSelectorClick(this)" />
+			<label class="board-selector-item background_wood" for="wood"></label>
+			<input id="wood_dark" type="radio" name="settings_boardbackground_selector" value="wood_dark" onclick="BoardSelectorClick(this)"
+			/>
+			<label class="board-selector-item background_wood_dark" for="wood_dark"></label>
+			<input id="wood_gray" type="radio" name="settings_boardbackground_selector" value="wood_gray" onclick="BoardSelectorClick(this)"
+			/>
+			<label class="board-selector-item background_wood_gray" for="wood_gray"></label>
+			<input id="green" type="radio" name="settings_boardbackground_selector" value="green" onclick="BoardSelectorClick(this)"
+			/>
+			<label class="board-selector-item background_green" for="green"></label>
+			<input id="red" type="radio" name="settings_boardbackground_selector" value="red" onclick="BoardSelectorClick(this)" />
+			<label class="board-selector-item background_red" for="red"></label>
+			<input id="blue" type="radio" name="settings_boardbackground_selector" value="blue" onclick="BoardSelectorClick(this)" />
+			<label class="board-selector-item background_blue" for="blue"></label>
+		</div>
+
+		<div style="margin-left:5%; width:95%; text-align:left; font-size:16pt;">Card Color:</div>
+		<div class="image-selector">
+			<input id="card_blue" type="radio" name="settings_card_color_selector" value="blue" onclick="CardSelectorClick(this)" />
+			<label class="card-selector-item card_back_blue" for="card_blue"></label>
+			<input id="card_red" type="radio" name="settings_card_color_selector" value="red" onclick="CardSelectorClick(this)" />
+			<label class="card-selector-item card_back_red" for="card_red"></label>
+			<input id="card_green" type="radio" name="settings_card_color_selector" value="green" onclick="CardSelectorClick(this)" />
+			<label class="card-selector-item card_back_green" for="card_green"></label>
+		</div>
+	</div>
+
+	<div id="menu_statistics" class="menu_view">
+		<div id="menu_statistics_title" class="menu_card_title">Statistics</div>
+		<button id="menu_statistics_close_button" class="close_button" onclick="menu_card_close_click()">X</button>
+
+		<table id="menu_statistics_table">
+			<tr>
+				<td></td>
+				<td class="menu_statistics_table_stat">Easy</td>
+				<td class="menu_statistics_table_stat">Standard</td>
+				<td class="menu_statistics_table_stat">Pro</td>
+				<td class="menu_statistics_table_stat_total">Total</td>
+			</tr>
+			<tr>
+				<td class="menu_statistics_table_category">Games Played</td>
+				<td class="menu_statistics_table_stat" id="menu_stat_games_played_Easy"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_games_played_Standard"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_games_played_Pro"></td>
+				<td class="menu_statistics_table_stat_total" id="menu_stat_games_played_Total">0</td>
+			</tr>
+			<tr>
+				<td class="menu_statistics_table_category">Wins</td>
+				<td class="menu_statistics_table_stat" id="menu_stat_wins_Easy"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_wins_Standard"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_wins_Pro"></td>
+				<td class="menu_statistics_table_stat_total" id="menu_stat_wins_Total">0</td>
+			</tr>
+			<tr>
+				<td class="menu_statistics_table_category">2nd Places</td>
+				<td class="menu_statistics_table_stat" id="menu_stat_2nd_Easy"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_2nd_Standard"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_2nd_Pro"></td>
+				<td class="menu_statistics_table_stat_total" id="menu_stat_2nd_Total">0</td>
+			</tr>
+			<tr>
+				<td class="menu_statistics_table_category">3rd Places</td>
+				<td class="menu_statistics_table_stat" id="menu_stat_3rd_Easy"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_3rd_Standard"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_3rd_Pro"></td>
+				<td class="menu_statistics_table_stat_total" id="menu_stat_3rd_Total">0</td>
+			</tr>
+			<tr>
+				<td class="menu_statistics_table_category">4th Places</td>
+				<td class="menu_statistics_table_stat" id="menu_stat_4th_Easy"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_4th_Standard"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_4th_Pro"></td>
+				<td class="menu_statistics_table_stat_total" id="menu_stat_4th_Total">0</td>
+			</tr>
+			<tr>
+				<td class="menu_statistics_table_category">Moons Shot</td>
+				<td class="menu_statistics_table_stat" id="menu_stat_moons_shot_Easy"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_moons_shot_Standard"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_moons_shot_Pro"></td>
+				<td class="menu_statistics_table_stat_total" id="menu_stat_moons_shot_Total">0</td>
+			</tr>
+			<tr>
+				<td class="menu_statistics_table_category">Win Percentage</td>
+				<td class="menu_statistics_table_stat" id="menu_stat_win_percent_Easy"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_win_percent_Standard"></td>
+				<td class="menu_statistics_table_stat" id="menu_stat_win_percent_Pro"></td>
+				<td class="menu_statistics_table_stat_total" id="menu_stat_win_percent_Total"></td>
+			</tr>
+		</table>
+		<table id="menu_statistics_buttons_table">
+			<tr>
+				<td>
+					<center>
+						<button id="menu_statistics_reset_button" onclick="ResetStatisticsButtonClick()">Reset
+							<br>Statistics</button>
+					</center>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<!-- <div id="play_more_games_menu">
+		<div id="play_more_games_title">Play More<br>Card Classics</div>
+		<button id="play_more_games_close_button" class="close_button" onclick="play_more_games_close_click()">X</button>
+		<a class="more_games_icon_button" href="http://www.spadescardclassic.com" style="margin-top: 50pt">
+			<span style="display: block; width:100%; height:100%">
+				<div id="more_games_icon_spades"></div>
+				<div class="more_games_icon_title">
+					<center>
+						<div class="more_games_icon_title1">SPADES</div>
+						<div class="more_games_icon_title2">CARD CLASSIC</div>
+					</center>
+				</div>
+			</span>
+		</a>
+		<a class="more_games_icon_button" href="http://www.pinochleclassic.com">
+			<span style="display: block; width:100%; height:100%">
+				<div id="more_games_icon_pinochle"></div>
+				<div class="more_games_icon_title">
+					<center>
+						<div class="more_games_icon_title1">PINOCHLE</div>
+						<div class="more_games_icon_title2">CLASSIC</div>
+					</center>
+				</div>
+			</span>
+		</a>
+		<a class="more_games_icon_button" href="http://www.cribbageclassic.com">
+			<span style="display: block; width:100%; height:100%">
+				<div id="more_games_icon_cribbage"></div>
+				<div class="more_games_icon_title">
+					<center>
+						<div class="more_games_icon_title1">CRIBBAGE</div>
+						<div class="more_games_icon_title2">CARD CLASSIC</div>
+					</center>
+				</div>
+			</span>
+		</a>
+	</div> -->
+
+	<script src="https://unpkg.com/algosdk@latest"></script>	
+	<script type="text/javascript" src="js/algo.js"></script>
+</body>
+
+</html>

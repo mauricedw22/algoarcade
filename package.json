@@ -1,0 +1,27 @@
+{
+  "name": "AlgoDNS_by_Maurice_W2",
+  "version": "1.0.0",
+  "description": "Buy Domain names as NFTs on the Algorand blockchain!",
+  "main": "server.js",
+  "dependencies": {
+    "algosdk": "^1.11.0",
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "consolidate": "^0.14.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.13.4",
+    "express-session": "^1.16.1",
+    "html": "^0.0.10",
+    "minimist": "^1.2.0",
+    "morgan": "^1.9.1",
+    "mustache": "^2.2.1",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Maurice Walker II",
+  "license": "ISC"
+}
